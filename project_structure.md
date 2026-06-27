@@ -25,6 +25,7 @@ Project/
 ```text
 RBAC.Lab Monorepo Root /
 ├── .cursor/                  # 專案層級 Cursor 全域規則 (alwaysApply: true)
+│   ├── persona/              # Persona 專家角色技能定義檔 (@CSA, @CIE, @BAE, @FTL, @SEC, @QAE)
 │   └── rules/                # 領域與技術專屬 Cursor 規則 (alwaysApply: false)
 ├── ClientApp/                # Angular v20+ 現代化前端 SPA 專案根目錄
 ├── Controllers/              # C# / .NET 10+ MVC 與 RESTful API 端點
@@ -37,6 +38,7 @@ RBAC.Lab Monorepo Root /
 ├── FileSystem.Lib/           # 檔案系統管理與二進位串流處理類別庫
 ├── OpenXML.Report.Lib/       # 進階 Word/Excel/PDF 報表產製類別庫
 ├── database/                 # 資料庫結構腳本與 SQL 語法彙整
+├── PERSONA_SKILLS_ARCHITECTURE.md # Persona 專家角色與技能運作機制架構書
 ├── MDC_RULES_ANALYSIS.md     # MDC 規則動態載入與 globs 匹配分析報告
 ├── project_structure.md      # 本專案架構文件
 ├── eslint.config.mjs         # 現代化 ESLint 9 Flat Config 全域檢查設定
