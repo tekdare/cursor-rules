@@ -12,10 +12,11 @@
                ┌────────────────────────────────────────────────────────┐
                │              Cursor AI (Chat / Composer)               │
                │                                                        │
-[使用者輸入] ──┼─► [ @CSA / @BAE / @FTL / @SEC / @CIE / @QAE ]          │
+[使用者輸入] ──┼─► [ @CSA / @BAE / @FTL / @SEC / @CIE / @QAE / @UXD ]    │
+               │    (或於對話框直接輸入 `/` 選擇原生 Skills 技能選單)     │
                │             │                                          │
                │             ▼ (.cursor/rules/500-persona-*.mdc 攔截)    │
-               │     [ 自動載入 .cursor/persona/<name>-commands.md ]    │
+               │     [ 自動載入 .cursor/skills/<skill-name>/SKILL.md ]  │
                │             │                                          │
                │             ▼ (專家視角展開與 DoD 執行)                │
                │     [ 專業架構審核 / 威脅建模 / CRUD 鷹架 / 臨床驗證 ]  │
@@ -26,21 +27,22 @@
 
 ## 👥 Persona 專家角色定義與總覽
 
-| Persona 代號 | 觸發前綴 | 技能定義檔 | 核心能力與主打命令 |
+| Persona 代號 | 觸發前綴 | 原生技能名稱與定義檔 (位於 `.cursor/skills/`) | 核心能力與主打命令 |
 | :--- | :--- | :--- | :--- |
-| **`ROLE-01-CSA`** | `@CSA` | [`csa-commands.md`](.cursor/persona/csa-commands.md) | **首席系統架構師**：主責 ADR、C4 架構圖 (`/csa draw-c4`)、NFR 達標審核、架構裁決與 9-Step 啟動。 |
-| **`ROLE-04-CIE`** | `@CIE` | [`cie-commands.md`](.cursor/persona/cie-commands.md) | **臨床資訊專家**：主責臨床規格 review (`/cie review-clinical-spec`)、三階邊界值檢驗與 `/cie verify` 公式守門。 |
-| **`ROLE-03-BAE`** | `@BAE` | [`bae-commands.md`](.cursor/persona/bae-commands.md) | **後端 API 工程師**：主攻 OpenAPI、Clean Architecture CRUD 鷹架 (`/bae scaffold-crud`)、Audit Log 補強與軟刪除。 |
-| **`ROLE-02-FTL`** | `@FTL` | [`ftl-commands.md`](.cursor/persona/ftl-commands.md) | **前端技術領導**：主攻 Angular 20+ 獨立模組鷹架 (`/ftl scaffold-module`)、Reactive Form、Signal Facade 與打包預算。 |
-| **`ROLE-06-SEC`** | `@SEC` | [`sec-commands.md`](.cursor/persona/sec-commands.md) | **資安工程師**：主攻 STRIDE 威脅建模 (`/sec threat-model`)、資安測試生成、Secrets 洩漏審查與隱私衝擊分析 (DPIA)。 |
-| **`ROLE-10-QAE`** | `@QAE` | [`qae-commands.md`](.cursor/persona/qae-commands.md) | **測試品保工程師**：主攻 xUnit/Vitest 單元測試 (`/qae generate-tests`)、Playwright E2E 測試、k6 壓測與 100% 公式覆蓋。 |
+| **`ROLE-01-CSA`** | `@CSA` | `csa-architect` ([`SKILL.md`](file:///D:/Dev/cursor-rules/.cursor/skills/csa-architect/SKILL.md)) | **首席系統架構師**：主責 ADR、C4 架構圖 (`/csa draw-c4`)、NFR 達標審核、架構裁決與 9-Step 啟動。 |
+| **`ROLE-04-CIE`** | `@CIE` | `cie-clinical` ([`SKILL.md`](file:///D:/Dev/cursor-rules/.cursor/skills/cie-clinical/SKILL.md)) | **臨床資訊專家**：主責臨床規格 review (`/cie review-clinical-spec`)、三階邊界值檢驗與 `/cie verify` 公式守門。 |
+| **`ROLE-03-BAE`** | `@BAE` | `bae-backend` ([`SKILL.md`](file:///D:/Dev/cursor-rules/.cursor/skills/bae-backend/SKILL.md)) | **後端 API 工程師**：主攻 OpenAPI、Clean Architecture CRUD 鷹架 (`/bae scaffold-crud`)、Audit Log 補強與軟刪除。 |
+| **`ROLE-02-FTL`** | `@FTL` | `ftl-frontend` ([`SKILL.md`](file:///D:/Dev/cursor-rules/.cursor/skills/ftl-frontend/SKILL.md)) | **前端技術領導**：主攻 Angular 20+ 獨立模組鷹架 (`/ftl scaffold-module`)、Reactive Form、Signal Facade 與打包預算。 |
+| **`ROLE-05-UXD`** | `@UXD` | `uxd-medical` ([`SKILL.md`](file:///D:/Dev/cursor-rules/.cursor/skills/uxd-medical/SKILL.md)) | **醫療 UX 設計師**：主攻醫療 Design Tokens (`/uxd generate-tokens`)、WCAG 2.1 AA 可及性、臨床人因工程與工作流簡化。 |
+| **`ROLE-06-SEC`** | `@SEC` | `sec-security` ([`SKILL.md`](file:///D:/Dev/cursor-rules/.cursor/skills/sec-security/SKILL.md)) | **資安工程師**：主攻 STRIDE 威脅建模 (`/sec threat-model`)、資安測試生成、Secrets 洩漏審查與隱私衝擊分析 (DPIA)。 |
+| **`ROLE-10-QAE`** | `@QAE` | `qae-quality` ([`SKILL.md`](file:///D:/Dev/cursor-rules/.cursor/skills/qae-quality/SKILL.md)) | **測試品保工程師**：主攻 xUnit/Vitest 單元測試 (`/qae generate-tests`)、Playwright E2E 測試、k6 壓測與 100% 公式覆蓋。 |
 
 ---
 
 ## ⚙️ 觸發與運作機制 (How it works in Cursor)
 
 ### 1. MDC 動態橋接機制
-在 `.cursor/rules/` 下建立了 `500-persona-skills-commands.mdc` 規則，該文件攔截使用者對任何 Persona 代號或前綴的呼叫。當您輸入 `@CSA` 時，Cursor 會自動讀取並吸收 `.cursor/persona/csa-commands.md` 內部的細緻指令與 DoD。
+在 `.cursor/rules/` 下建立了 `500-persona-skills-commands.mdc` 規則，該文件攔截使用者對任何 Persona 代號或前綴的呼叫。當您輸入 `@CSA` 時，Cursor 會自動讀取並吸收 `.cursor/personas/role-01-csa.md` 內部的細緻指令與 DoD。
 
 ### 2. Slash Commands 快捷觸發
 您可以在 Composer 或聊天中直接要求執行具體命令。例如：
@@ -56,4 +58,4 @@ Cursor AI 將會精確為您生成符合 Clean Architecture 分層的 Domain, Us
 ---
 
 ## 🏛️ 存放庫目錄整合
-這套系統完美相容 RBAC.Lab 全端 Monorepo 架構，所有技能指令定義均集中收納於 `.cursor/persona/` 內，既維持高清晰度，又不干擾一般業務開發的上下文。
+這套系統完美相容 RBAC.Lab 全端 Monorepo 架構，所有技能指令定義均集中收納於 `.cursor/personas/` 內，既維持高清晰度，又不干擾一般業務開發的上下文。

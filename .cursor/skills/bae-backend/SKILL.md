@@ -1,8 +1,13 @@
+---
+name: bae-backend
+description: 後端 API 工程師技能，主攻 OpenAPI 3.1 產出、Clean Architecture CRUD 鷹架、Audit Log 整合與軟刪除機制。
+---
+
 # `@BAE` 後端 API 工程師 — Slash Commands
 
 > 主責：ROLE-03-BAE ｜ 技術棧：.NET 10 / C# 14 / EF Core 10 / Clean Architecture
 > 版本：v1.0 (Cursor AI Edition)
-> 載入方式：Cursor AI 對話/Composer 模式下輸入 `@BAE` 或直接調用 `/bae <command>` 觸發。Cursor 將自動讀取本技能檔並轉換為後端專家視角與工作流程。
+> 載入方式：Cursor AI 對話/Composer 模式下輸入 `@BAE` 或直接調用 `/bae <command>` (或經 `/` 選單點選 `bae-backend`) 觸發。Cursor 將自動讀取本技能檔並轉換為後端專家視角與工作流程。
 
 ---
 
@@ -23,7 +28,7 @@
 
 ### 觸發語法
 ```
-/bae generate-openapi --from spec.yaml --out src/Backend/AvatarSystem.Api/Generated
+/bae generate-openapi --from spec.yaml --out <ProjectName>/Controllers/Generated
 ```
 
 ### 行為
@@ -40,20 +45,20 @@
 /bae scaffold-crud --entity <Name> [--with-audit] [--with-soft-delete] [--with-paging] [--with-fhir]
 ```
 
-### 產出檔案 (Clean Architecture)
+### 產出檔案 (Clean Architecture，動態依據當前專案/系統命名 `<ProjectName>`)
 ```
-src/Backend/
-├── AvatarSystem.Domain/Entities/<Name>.cs
-├── AvatarSystem.Application/UseCases/<Name>/
+<SolutionName> / <ProjectName> /
+├── <ProjectName>.Domain/Entities/<Name>.cs
+├── <ProjectName>.Application/UseCases/<Name>/
 │   ├── Create<Name>Handler.cs
 │   ├── Get<Name>Handler.cs
 │   ├── Update<Name>Handler.cs
 │   ├── Delete<Name>Handler.cs        # Soft delete
 │   ├── Dto/<Name>Dto.cs
 │   └── Validators/<Name>Validator.cs
-├── AvatarSystem.Infrastructure/Repositories/<Name>Repository.cs
-├── AvatarSystem.Api/Controllers/<Name>Controller.cs   # Thin layer
-└── tests/AvatarSystem.UnitTests/UseCases/<Name>/...
+├── <ProjectName>.Infrastructure/Repositories/<Name>Repository.cs
+├── <ProjectName>.Api/Controllers/<Name>Controller.cs   # Thin layer
+└── tests/<ProjectName>.UnitTests/UseCases/<Name>/...
 ```
 
 ### 必達條件
@@ -113,7 +118,7 @@ src/Backend/
 ```
 ✓ 無 new for DI
 ✓ Controller 薄層
-✓ DTO + Validator 齊備
+✓ DTO + Validator 齐备
 ✓ Audit Log 整合
 ✓ Async/Await + CancellationToken
 ✓ 無 EF Update on Audit

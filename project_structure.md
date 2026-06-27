@@ -1,18 +1,4 @@
-# Project Folder Structure
-
-```text
-Project/
-|   .editorconfig
-|   .gitignore
-|   .prettierignore
-|   .prettierrc
-|   eslint.config.mjs
-|   LICENSE
-|   MDC_RULES_ANALYSIS.md
-|   nx.json
-|   package-lock.json
-|   package.json
-|  # 專案目錄結構與模組說明 (RBAC.Lab Monorepo 全端方案架構)
+# 專案目錄結構與模組說明 (RBAC.Lab Monorepo 全端方案架構)
 
 本文件詳細記載專案之核心目錄、方案結構及 ClientApp 子資料夾架構設計。當 AI 建立新方案及存放庫時，必須精確遵循此架構規範。
 
@@ -25,8 +11,17 @@ Project/
 ```text
 Monorepo Root /
 ├── .cursor/                  # 專案層級 Cursor 全域規則 (alwaysApply: true)
-│   ├── persona/              # Persona 專家角色技能定義檔 (@CSA, @CIE, @BAE, @FTL, @SEC, @QAE)
+│   ├── skills/               # Cursor 原生 Skills 技能模組定義 (@CSA, @CIE, @BAE, @FTL, @UXD, @SEC, @QAE)
+│   │   ├── csa-architect/    # @CSA 首席系統架構師技能模組 (SKILL.md)
+│   │   ├── ftl-frontend/     # @FTL 前端技術領導技能模組 (SKILL.md)
+│   │   ├── bae-backend/      # @BAE 後端 API 工程師技能模組 (SKILL.md)
+│   │   ├── cie-clinical/     # @CIE 臨床資訊專家技能模組 (SKILL.md)
+│   │   ├── uxd-medical/      # @UXD 醫療 UX 設計師技能模組 (SKILL.md)
+│   │   ├── sec-security/     # @SEC 資安工程師技能模組 (SKILL.md)
+│   │   └── qae-quality/      # @QAE 測試品保工程師技能模組 (SKILL.md)
+│   │
 │   └── rules/                # 領域與技術專屬 Cursor 規則 (alwaysApply: false)
+│
 ├── ClientApp/                # Angular v20+ 現代化前端 SPA 專案根目錄
 ├── Controllers/              # C# / .NET 10+ MVC 與 RESTful API 端點
 ├── Authorization/            # 權限控管、自訂原則 (Policies) 與安全中介軟體
@@ -128,86 +123,181 @@ RBAC.Lab Solution (.NET 10+)
 └── OpenXML.Report.Lib               # 實作動態生成 Word/Excel/PDF 進階報表子專案
 ```
 
-### 後端子資料夾職責守則
-1. **多 DbContext 解耦**：各業務領域之儲存體獨立運作，避免肥大混雜的單一 God Context。
-2. **現代化 Minimal Hosting**：採用 `Program.cs` 單一核心載入管線，結合 ASP.NET Core SPA 拓展功能，無縫接軌前端 `ClientApp`。
-|   project_structure.md
-|   README.md
-|   tsconfig.base.json
-|   vitest.workspace.ts
-|   
-+---.cursor
-|   |   architecture-monorepo.mdc
-|   |   project-overview.mdc
-|   |   safety-security.mdc
-|   |   
-|   \---rules
-|           000-global-naming.mdc
-|           100-angular-naming-and-structure.mdc
-|           110-angular-components.mdc
-|           120-angular-rxjs-signals.mdc
-|           130-angular-routing-forms-http.mdc
-|           200-csharp-backend-naming-and-structure.mdc
-|           210-csharp-api-and-minimalapi.mdc
-|           220-csharp-application-domain-infra.mdc
-|           230-csharp-observability-security.mdc
-|           300-sql-global-data-rules.mdc
-|           310-mssql-rules.mdc
-|           320-oracle-rules.mdc
-|           330-postgresql-rules.mdc
-|           340-mysql-rules.mdc
-|           350-sqlite-rules.mdc
-|           400-devops-ci-monorepo.mdc
-|           
-+---.idea
-|       .gitignore
-|       awsToolkit.xml
-|       encodings.xml
-|       indexLayout.xml
-|       projectSettingsUpdater.xml
-|       vcs.xml
-|       workspace.xml
-|       
-+---apps
-|   +---backend
-|   |   |   project.json
-|   |   |   tsconfig.app.json
-|   |   |   tsconfig.json
-|   |   |   
-|   |   \---src
-|   |       |   main.ts
-|   |       |   
-|   |       \---app
-|   |               app.controller.ts
-|   |               app.module.ts
-|   |               app.service.ts
-|   |               
-|   \---frontend
-|       |   eslint.config.mjs
-|       |   project.json
-|       |   tsconfig.app.json
-|       |   tsconfig.json
-|       |   tsconfig.spec.json
-|       |   vite.config.mts
-|       |   
-|       +---public
-|       |       favicon.ico
-|       |       
-|       \---src
-|           |   index.html
-|           |   main.ts
-|           |   styles.css
-|           |   test-setup.ts
-|           |   
-|           \---app
-|                   app.config.ts
-|                   app.css
-|                   app.html
-|                   app.routes.ts
-|                   app.ts
-|                   
-\---libs
-    +---backend
+---
+
+## 📦 存放庫真實目錄結構與檔案清單 (Repository Files)
+
+以下為本存放庫 (`cursor-rules`) 內真實檔案與動態規則載入之實體清單：
+
+```text
+cursor-rules/
+├── .cursor/
+│   ├── architecture-monorepo.mdc
+│   ├── project-overview.mdc
+│   ├── safety-security.mdc
+│   ├── skills/
+│   │   ├── csa-architect/
+│   │   │   └── SKILL.md
+│   │   ├── ftl-frontend/
+│   │   │   └── SKILL.md
+│   │   ├── bae-backend/
+│   │   │   └── SKILL.md
+│   │   ├── cie-clinical/
+│   │   │   └── SKILL.md
+│   │   ├── uxd-medical/
+│   │   │   └── SKILL.md
+│   │   ├── sec-security/
+│   │   │   └── SKILL.md
+│   │   └── qae-quality/
+│   │       └── SKILL.md
+│   └── rules/
+│       ├── 000-global-naming.mdc
+│       ├── 100-angular-naming-and-structure.mdc
+│       ├── 110-angular-components.mdc
+│       ├── 120-angular-rxjs-signals.mdc
+│       ├── 130-angular-routing-forms-http.mdc
+│       ├── 200-csharp-backend-naming-and-structure.mdc
+│       ├── 210-csharp-api-and-minimalapi.mdc
+│       ├── 220-csharp-application-domain-infra.mdc
+│       ├── 230-csharp-observability-security.mdc
+│       ├── 300-sql-global-data-rules.mdc
+│       ├── 310-mssql-rules.mdc
+│       ├── 320-oracle-rules.mdc
+│       ├── 330-postgresql-rules.mdc
+│       ├── 340-mysql-rules.mdc
+│       ├── 350-sqlite-rules.mdc
+│       ├── 400-devops-ci-monorepo.mdc
+│       └── 500-persona-skills-commands.mdc
+├── apps/
+│   ├── backend/
+│   │   ├── project.json
+│   │   ├── tsconfig.app.json
+│   │   ├── tsconfig.json
+│   │   └── src/
+│   │       ├── main.ts
+│   │       └── app/
+│   │           ├── app.controller.ts
+│   │           ├── app.module.ts
+│   │           └── app.service.ts
+│   └── frontend/
+│       ├── eslint.config.mjs
+│       ├── project.json
+│       ├── tsconfig.app.json
+│       ├── tsconfig.json
+│       ├── tsconfig.spec.json
+│       ├── vite.config.mts
+│       ├── public/
+│       │   └── favicon.ico
+│       └── src/
+│           ├── index.html
+│           ├── main.ts
+│           ├── styles.css
+│           ├── test-setup.ts
+│           └── app/
+│               ├── app.config.ts
+│               ├── app.css
+│               ├── app.html
+│               ├── app.routes.ts
+│               └── app.ts
+├── libs/
+│   ├── backend/
+│   │   ├── auth/src/index.ts
+│   │   └── database/src/index.ts
+│   ├── frontend/
+│   │   ├── data-access/src/index.ts
+│   │   └── ui/src/index.ts
+│   └── shared/
+│       ├── types/src/index.ts
+│       └── utils/src/index.ts
+├── .editorconfig
+├── .gitignore
+├── .prettierignore
+├── .prettierrc
+├── eslint.config.mjs
+├── LICENSE
+├── MDC_RULES_ANALYSIS.md
+├── nx.json
+├── package-lock.json
+├── package.json
+├── PERSONA_SKILLS_ARCHITECTURE.md
+├── project_structure.md
+├── README.md
+├── tsconfig.base.json
+└── vitest.workspace.ts
+```
+
+### 完整檔案清單索引 (Flat Files List)
+- `.editorconfig`
+- `.gitignore`
+- `.prettierignore`
+- `.prettierrc`
+- `eslint.config.mjs`
+- `LICENSE`
+- `MDC_RULES_ANALYSIS.md`
+- `nx.json`
+- `package-lock.json`
+- `package.json`
+- `PERSONA_SKILLS_ARCHITECTURE.md`
+- `project_structure.md`
+- `README.md`
+- `tsconfig.base.json`
+- `vitest.workspace.ts`
+- `.cursor\architecture-monorepo.mdc`
+- `.cursor\project-overview.mdc`
+- `.cursor\safety-security.mdc`
+- `.cursor\skills\csa-architect\SKILL.md`
+- `.cursor\skills\ftl-frontend\SKILL.md`
+- `.cursor\skills\bae-backend\SKILL.md`
+- `.cursor\skills\cie-clinical\SKILL.md`
+- `.cursor\skills\uxd-medical\SKILL.md`
+- `.cursor\skills\sec-security\SKILL.md`
+- `.cursor\skills\qae-quality\SKILL.md`
+- `.cursor\rules\000-global-naming.mdc`
+- `.cursor\rules\100-angular-naming-and-structure.mdc`
+- `.cursor\rules\110-angular-components.mdc`
+- `.cursor\rules\120-angular-rxjs-signals.mdc`
+- `.cursor\rules\130-angular-routing-forms-http.mdc`
+- `.cursor\rules\200-csharp-backend-naming-and-structure.mdc`
+- `.cursor\rules\210-csharp-api-and-minimalapi.mdc`
+- `.cursor\rules\220-csharp-application-domain-infra.mdc`
+- `.cursor\rules\230-csharp-observability-security.mdc`
+- `.cursor\rules\300-sql-global-data-rules.mdc`
+- `.cursor\rules\310-mssql-rules.mdc`
+- `.cursor\rules\320-oracle-rules.mdc`
+- `.cursor\rules\330-postgresql-rules.mdc`
+- `.cursor\rules\340-mysql-rules.mdc`
+- `.cursor\rules\350-sqlite-rules.mdc`
+- `.cursor\rules\400-devops-ci-monorepo.mdc`
+- `.cursor\rules\500-persona-skills-commands.mdc`
+- `apps\backend\project.json`
+- `apps\backend\tsconfig.app.json`
+- `apps\backend\tsconfig.json`
+- `apps\backend\src\main.ts`
+- `apps\backend\src\app\app.controller.ts`
+- `apps\backend\src\app\app.module.ts`
+- `apps\backend\src\app\app.service.ts`
+- `apps\frontend\eslint.config.mjs`
+- `apps\frontend\project.json`
+- `apps\frontend\tsconfig.app.json`
+- `apps\frontend\tsconfig.json`
+- `apps\frontend\tsconfig.spec.json`
+- `apps\frontend\vite.config.mts`
+- `apps\frontend\public\favicon.ico`
+- `apps\frontend\src\index.html`
+- `apps\frontend\src\main.ts`
+- `apps\frontend\src\styles.css`
+- `apps\frontend\src\test-setup.ts`
+- `apps\frontend\src\app\app.config.ts`
+- `apps\frontend\src\app\app.css`
+- `apps\frontend\src\app\app.html`
+- `apps\frontend\src\app\app.routes.ts`
+- `apps\frontend\src\app\app.ts`
+- `libs\backend\auth\src\index.ts`
+- `libs\backend\database\src\index.ts`
+- `libs\frontend\data-access\src\index.ts`
+- `libs\frontend\ui\src\index.ts`
+- `libs\shared\types\src\index.ts`
+- `libs\shared\utils\src\index.ts`d
     |   +---auth
     |   |   \---src
     |   |           index.ts

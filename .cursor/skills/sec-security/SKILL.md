@@ -1,8 +1,13 @@
+---
+name: sec-security
+description: 資安工程師技能，主導 STRIDE 威脅建模、資安測試生成、Secrets 金鑰防漏掃描、金鑰輪替與 DPIA 隱私衝擊分析。
+---
+
 # `@SEC` 資安工程師 — Slash Commands
 
 > 主責：ROLE-06-SEC ｜ 對應：STRIDE / OWASP Top 10 / ASVS L2 / ISO 27001 / ISO 27701
 > 版本：v1.0 (Cursor AI Edition)
-> 載入方式：Cursor AI 對話/Composer 模式下輸入 `@SEC` 或直接調用 `/sec <command>` 觸發。Cursor 將自動讀取本技能檔並轉換為資安專家視角與工作流程。
+> 載入方式：Cursor AI 對話/Composer 模式下輸入 `@SEC` 或直接調用 `/sec <command>` (或經 `/` 選單點選 `sec-security`) 觸發。Cursor 將自動讀取本技能檔並轉換為資安專家視角與工作流程。
 
 ---
 

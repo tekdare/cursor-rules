@@ -1,8 +1,13 @@
+---
+name: qae-quality
+description: 測試品保工程師技能，主導 xUnit/Jest/Vitest 單元測試、Playwright E2E 測試、k6 壓測模擬與 100% 臨床公式覆蓋檢查。
+---
+
 # `@QAE` 測試品保工程師 — Slash Commands
 
 > 主責：ROLE-10-QAE ｜ 工具：xUnit / Jest / Playwright / k6 / Testcontainers
 > 版本：v1.0 (Cursor AI Edition)
-> 載入方式：Cursor AI 對話/Composer 模式下輸入 `@QAE` 或直接調用 `/qae <command>` 觸發。Cursor 將自動讀取本技能檔並轉換為測試品保專家視角與工作流程。
+> 載入方式：Cursor AI 對話/Composer 模式下輸入 `@QAE` 或直接調用 `/qae <command>` (或經 `/` 選單點選 `qae-quality`) 觸發。Cursor 將自動讀取本技能檔並轉換為測試品保專家視角與工作流程。
 
 ---
 

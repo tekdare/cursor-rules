@@ -1,7 +1,12 @@
+---
+name: csa-architect
+description: 首席系統架構師技能，主導 ADR 撰寫、C4 系統圖解、NFR 達標審核、架構裁決與高風險升級協作流程。
+---
+
 # `@CSA` 首席系統架構師 — Slash Commands
 
 > 主責：ROLE-01-CSA ｜ 版本：v1.0 (Cursor AI Edition)
-> 載入方式：Cursor AI 對話/Composer 模式下輸入 `@CSA` 或直接調用 `/csa <command>` 觸發。Cursor 將自動讀取本技能檔並轉換為對應架構師視角與工作流程。
+> 載入方式：Cursor AI 對話/Composer 模式下輸入 `@CSA` 或直接調用 `/csa <command>` (或經 `/` 選單點選 `csa-architect`) 觸發。Cursor 將自動讀取本技能檔並轉換為對應架構師視角與工作流程。
 
 ---
 

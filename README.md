@@ -24,7 +24,14 @@ Our monorepo cleanly separates the ASP.NET Core host, the Angular SPA client, an
 ```text
 cursor-rules /
 ├── .cursor/                  # Global Cursor AI rules (alwaysApply: true)
-│   ├── persona/              # Persona expert skill definitions (@CSA, @CIE, @BAE, @FTL, @SEC, @QAE)
+│   ├── skills/               # Cursor 原生 Skills 技能模組定義 (@CSA, @CIE, @BAE, @FTL, @UXD, @SEC, @QAE)
+│   │   ├── csa-architect/    # @CSA Chief System Architect (SKILL.md)
+│   │   ├── ftl-frontend/     # @FTL Frontend Tech Lead (SKILL.md)
+│   │   ├── bae-backend/      # @BAE Backend API Engineer (SKILL.md)
+│   │   ├── cie-clinical/     # @CIE Clinical Information Expert (SKILL.md)
+│   │   ├── uxd-medical/      # @UXD Medical UX Designer (SKILL.md)
+│   │   ├── sec-security/     # @SEC Security Engineer (SKILL.md)
+│   │   └── qae-quality/      # @QAE QA Engineer (SKILL.md)
 │   └── rules/                # Domain-specific Cursor AI rules (alwaysApply: false)
 ├── ClientApp/                # Modern Angular v20+ frontend application (SPA root)
 │   ├── src/

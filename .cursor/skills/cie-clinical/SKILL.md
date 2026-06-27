@@ -1,7 +1,12 @@
+---
+name: cie-clinical
+description: 臨床資訊專家技能，主導臨床規格審核、三階邊界值檢驗、SOAPIER 紀錄樣板與臨床公式安全防護守門。
+---
+
 # `@CIE` 臨床資訊專家 — Slash Commands
 
 > 主責：ROLE-04-CIE ｜ 版本：v1.0 (Cursor AI Edition)
-> 載入方式：Cursor AI 對話/Composer 模式下輸入 `@CIE` 或直接調用 `/cie <command>` 觸發。Cursor 將自動讀取本技能檔並轉換為臨床專家視角與工作流程。
+> 載入方式：Cursor AI 對話/Composer 模式下輸入 `@CIE` 或直接調用 `/cie <command>` (或經 `/` 選單點選 `cie-clinical`) 觸發。Cursor 將自動讀取本技能檔並轉換為臨床專家視角與工作流程。
 
 ---
 

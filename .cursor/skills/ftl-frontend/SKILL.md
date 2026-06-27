@@ -1,8 +1,13 @@
+---
+name: ftl-frontend
+description: 前端技術領導技能，主導 Angular 20+ 獨立模組鷹架、Reactive Forms 雙重驗證、Signal-based Facade 與效能預算檢查。
+---
+
 # `@FTL` 前端技術領導 — Slash Commands
 
-> 主責：ROLE-02-FTL ｜ 技術棧：Angular 20+ / Signals / Zoneless / PrimeNG 20+ / Tailwind v4
+> 主責：ROLE-03-FTL ｜ 技術棧：Angular 20+ / Signals / Zoneless / PrimeNG 20+ / Tailwind v4
 > 版本：v1.0 (Cursor AI Edition)
-> 載入方式：Cursor AI 對話/Composer 模式下輸入 `@FTL` 或直接調用 `/ftl <command>` 觸發。Cursor 將自動讀取本技能檔並轉換為前端專家視角與工作流程。
+> 載入方式：Cursor AI 對話/Composer 模式下輸入 `@FTL` 或直接調用 `/ftl <command>` (或經 `/` 選單點選 `ftl-frontend`) 觸發。Cursor 將自動讀取本技能檔並轉換為前端專家視角與工作流程。
 
 ---
 
