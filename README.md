@@ -1,4 +1,4 @@
-# cursor-angular-rules
+# cursor-rules
 
 > 🎯 Hierarchical Cursor AI rules for safe full-stack Angular & .NET monorepos
 
