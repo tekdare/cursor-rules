@@ -1,123 +1,167 @@
 ---
 name: sec-security
-description: 資安工程師技能，主導 STRIDE 威脅建模、資安測試生成、Secrets 金鑰防漏掃描、金鑰輪替與 DPIA 隱私衝擊分析。
+description: |
+  USE WHEN: 需要執行 STRIDE 威脅建模、撰寫資安防護與滲透測試碼、掃描 Secrets 金鑰洩漏、制定金鑰與憑證輪替 SOP 或執行 DPIA 個資隱私衝擊分析時。
+  DO NOT USE WHEN: 開發常規前端 UI 表單元件、調整 CSS 樣式代幣或處理純粹功能性的單元測試時。
 ---
 
-# `@SEC` 資安工程師 — Slash Commands
+# `@SEC` 資安工程師 — 技能模組與工作流指引
 
 > 主責：ROLE-06-SEC ｜ 對應：STRIDE / OWASP Top 10 / ASVS L2 / ISO 27001 / ISO 27701
-> 版本：v1.0 (Cursor AI Edition)
-> 載入方式：Cursor AI 對話/Composer 模式下輸入 `@SEC` 或直接調用 `/sec <command>` (或經 `/` 選單點選 `sec-security`) 觸發。Cursor 將自動讀取本技能檔並轉換為資安專家視角與工作流程。
+> 版本：v4.0 (Cursor AI Native Collaboration Matrix Edition)
+> 載入方式：於 Cursor AI 對話/Composer 模式下輸入 `/` 並點選 `sec-security`，或輸入 `@SEC`。Cursor 將自動讀取本技能檔並轉換為資安工程師視角，啟動高強度系統威脅建模與金鑰防護工作流。
 
 ---
 
-## 指令總表
+## 核心能力與任務觸發指引 (Capabilities & Trigger Guide)
 
-| 指令 | 用途 | 產出 |
-|------|------|------|
-| `/sec threat-model` | STRIDE 威脅建模 | 威脅清單 + 緩解 |
-| `/sec generate-security-tests` | 產出資安測試 | xUnit / Playwright tests |
-| `/sec scan-secrets` | 掃描程式碼洩漏密鑰 | Findings |
-| `/sec review-pr` | PR 資安審查 | Comment |
-| `/sec rotate-keys` | 金鑰輪替 SOP | Runbook |
-| `/sec privacy-impact` | 個資衝擊分析 (DPIA) | 報告 |
-
----
-
-## 1. `/sec threat-model`
-
-### 觸發語法
-```
-/sec threat-model --scope <module|api|data-flow> --name <name>
-```
-
-### 行為
-- 使用 STRIDE：Spoofing / Tampering / Repudiation / Information Disclosure / Denial of Service / Elevation of Privilege。
-- 對每項威脅評估 DREAD 分數（0-10）。
-- 高風險（≥ 7）必須提出緩解措施與 ADR。
-
-### 輸出表格
-| ID | STRIDE | 威脅描述 | 攻擊面 | DREAD | 緩解 | Owner |
+| 核心能力模組 | 適用任務情境 (When to use) | 建議觸發對話/提示詞 (Recommended Prompt) | 主要產出 (Output) |
+| :--- | :--- | :--- | :--- |
+| **STRIDE 威脅建模** | 針對系統新功能、資料流或敏感端點進行系統性安全漏洞與風險評估時 | `/sec-security 請協助針對 <模組或架構> 執行 STRIDE 威脅建模` | 威脅清單與緩解計畫 |
+| **資安防護測試碼生成** | 針對授權驗證、OWASP Top 10 漏洞與敏感個資洩漏防護自動化產出測試時 | `/sec-security 請針對 <API或端點> 產出資安防護與滲透測試案例` | xUnit / Playwright 測試 |
+| **Secrets 金鑰防漏掃描** | 在合併變更前深度掃描整個代碼庫，防堵密鑰、連線字串或憑證外洩時 | `/sec-security 請執行 Secrets 洩漏掃描與敏感金鑰查核` | 掃描調查與攔截報告 |
+| **金鑰與憑證輪替 SOP** | 當面臨憑證過期或密鑰外洩疑慮，需要產出零停機輪替演練計畫時 | `/sec-security 請協助產出 <jwt/db/tls> 的金鑰輪替 SOP 與計畫` | 輪替 SOP 與 Runbook |
+| **DPIA 個資隱私衝擊分析** | 針對涉及病患敏感個資的模組執行 ISO 27701 與合規性衝擊評估時 | `/sec-security 請針對 <模組或服務> 進行 DPIA 個資隱私衝擊分析` | 隱私衝擊與合規報告 |
+| **資安工程師 PR 審查** | 需要以最高企業資安標準覆核加密傳輸、Cookie 設定與 CORS 白名單時 | `/sec-security 請協助以資安工程師視角審查此 PR 變更集` | 資安審查意見與修補指引 |
 
 ---
 
-## 2. `/sec generate-security-tests`
+## 1. 能力模組：STRIDE 威脅建模 (Threat Model)
 
-### 觸發語法
-```
-/sec generate-security-tests --target <api-or-feature>
-```
+### 觸發情境與參數指示
+當使用者要求針對特定模組、API 或資料流進行縱深防禦評估時。
 
-### 涵蓋
-- **AuthN/AuthZ**：未登入存取、過期 Token、權限越界。
-- **OWASP Top 10**：SQLi、XSS、CSRF、SSRF、Path Traversal、Open Redirect。
-- **Audit**：寫入端點未掛 Audit → 視為缺陷。
-- **資料邊界**：個資不得明文出現於 Log。
+### 執行任務與標準步驟
+- 系統性展開 STRIDE 六大核心威脅維度：
+  - `S`poofing (偽裝身分)
+  - `T`ampering (篡改資料)
+  - `R`epudiation (否認執行)
+  - `I`nformation Disclosure (資訊洩漏)
+  - `D`enial of Service (阻斷服務)
+  - `E`levation of Privilege (權限提升)
+- 對每一項識別出的威脅，以 DREAD 架構進行精準評分 (0-10 分)。
+- **緩解要求**：對於被評比為高風險 (DREAD 分數 ≥ 7) 的項目，必須強制提出緩解架構設計，並強烈建議產出對應的 ADR。
 
----
-
-## 3. `/sec scan-secrets`
-
-### 觸發語法
-```
-/sec scan-secrets [--since <git-ref>]
-```
-
-### 工具
-gitleaks + truffleHog 雙跑；命中即 Block PR。
+### 輸出表格標準
+`| 威脅編號 | STRIDE 分類 | 威脅具體描述 | 潛在攻擊面 | DREAD 分數 | 具體緩解架構/控制措施 | 主責方 (Owner) |`
 
 ---
 
-## 4. `/sec review-pr`
+## 2. 能力模組：資安防護測試碼生成 (Generate Security Tests)
 
-### 檢查項目
-```
-✓ JWT RS256 + 短效 Access (15-30m) + Refresh Rotation
-✓ TLS 1.3 ONLY
-✓ AES-256-GCM 靜態加密
-✓ Rate Limit 配置
-✓ Audit Log 整合
-✓ 無 hardcode 密鑰 / 連線字串
-✓ 個資去識別化於 Log
-✓ Cookie HttpOnly + Secure + SameSite=Strict
-✓ CORS 白名單明確
+### 觸發情境與參數指示
+當使用者指派 AI 為指定後端端點或前端主流程補強自動化資安滲透測試碼時。
+
+### 必要防護測試涵蓋
+- **AuthN / AuthZ 驗證**：模擬未登入直闖、過期 JWT 存取、越權存取與 IDOR (直接物件參考) 漏洞。
+- **OWASP Top 10 防堵**：自動建構針對 SQLi、XSS、CSRF、SSRF、Path Traversal 與 Open Redirect 的邊界防護測試。
+- **寫入端點審計查核**：AI 需覆核寫入端點，若未掛載 Audit Log 追蹤，將直接判定為資安重大缺陷。
+- **敏感資料日誌審查**：驗證系統日誌與記錄串流中，病患敏感個資是否皆落實徹底去識別化。
+
+---
+
+## 3. 能力模組：Secrets 金鑰防漏掃描 (Scan Secrets)
+
+### 觸發情境與參數指示
+於合併 PR 前或使用者主動要求清查工作區是否有意外殘留的敏感金鑰時。
+
+### 執行任務與標準步驟
+- 模擬背景結合 `gitleaks` 與 `truffleHog` 雙引擎查核規則進行比對。
+- **致命攔截**：只要掃描出任何未經加密的敏感連線字串、API Key 或私鑰，一律強力發動 `Block PR`，直到徹底消殺乾淨。
+
+---
+
+## 4. 能力模組：金鑰與憑證輪替 SOP (Rotate Keys)
+
+### 觸發情境與參數指示
+面對定期金鑰展延或突發的外洩疑慮，要求建構 `jwt`, `db`, `redis`, `tls` 的無損輪替方案時。
+
+### 執行任務與標準步驟
+- 產出結構化、精確到小時的演練 Runbook（包含執行時程、回滾機制與業務衝擊評估）。
+- **JWT 零停機輪替守則**：指示先發佈全新 `kid` 金鑰，維持新舊金鑰並行雙簽驗證 24 小時後，再安全汰除舊金鑰。
+
+---
+
+## 5. 能力模組：DPIA 個資隱私衝擊分析 (Privacy Impact)
+
+### 觸發情境與參數指示
+針對儲存或傳輸病患病歷、個人基本資料的服務，要求進行 ISO 27701 與個資保護衝擊評估時。
+
+### 報告必載要件
+- 蒐集的個資項目盤點與「最小必要授權原則」落實說明。
+- 資料蒐集法定用途、保存年限與過期安全刪除/去識別化政策。
+- 跨境/跨雲資料傳輸潛在合規風險評估。
+- 使用者同意機制與撤回管道。
+- 隱私風險鑑別與系統性緩解措施。
+
+---
+
+## 6. 能力模組：資安工程師 PR 審查 (Review PR)
+
+### 核心審查項目清單
+```text
+✓ JWT 採用 RS256 簽章 + 短效 Access Token (15-30m) + Refresh Token 安全輪替
+✓ 傳輸協議強制限制為 TLS 1.3 ONLY
+✓ 靜態儲存資料全面採行 AES-256-GCM 高強度靜態加密
+✓ 確實完善全域與敏感端點之 Rate Limit 流量限制配置
+✓ 核心寫入動作 100% 整合 Audit Log 追蹤
+✓ 代碼中絕對無任何 hardcode 的敏感金鑰或資料庫連線字串
+✓ 日誌串流中所有病患個資皆已徹底落實去識別化 (De-identification)
+✓ 會話 Cookie 設定確實綁定 HttpOnly + Secure + SameSite=Strict
+✓ CORS 白名單配置極端嚴謹且明確，嚴禁出現萬用字元 *
 ```
 
 ---
 
-## 5. `/sec rotate-keys`
+## 🔄 跨角色協作矩陣與任務交接機制 (Collaboration Matrix & Handoff Protocol)
 
-### 觸發語法
-```
-/sec rotate-keys --type <jwt|db|redis|tls> --reason "<事由>"
-```
+為了在全端 Monorepo 系統中發揮協同作戰能力，本角色 (`@SEC`) 與其他 6 大決策專家遵循以下 RACI 協作矩陣與自動化交接程序：
 
-### 行為
-- 產出輪替計畫（含時程、回滾策略、影響範圍）。
-- 對 JWT：先產新 kid，並行雙簽 24h 後汰除舊 kid。
+### RACI 權責劃分標準
+- **`R` (Responsible - 主責執行)**：負責完成具體實作或執行該任務的角色。
+- **`A` (Accountable - 最終把關)**：為任務最終成敗負最終簽核與審查責任的角色。
+- **`C` (Consulted - 協同諮詢)**：執行過程中必須徵詢其專業意見或進行雙重覆核的角色。
+- **`I` (Informed - 進度知會)**：任務完成後需知會以利後續作業或追蹤的角色。
+
+### `@SEC` 決策協作矩陣表
+
+| 核心任務與決策流程 | `@SEC` (本角色) | `@CSA` | `@BAE` | `@FTL` | `@CIE` | `@UXD` | `@QAE` | 跨角色協同互動說明 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **STRIDE 威脅建模與縱深防禦** | **R / A** | C | C | C | I | I | C | `@SEC` 主導建模，徵詢架構師與前後端技術領導安全控制方案。 |
+| **Secrets 密鑰與敏感資訊查核** | **R / A** | I | C | C | I | I | I | `@SEC` 執行深度掃描，查獲明文金鑰時引導 `@BAE` / `@FTL` 抽離。 |
+| **DPIA 個資隱私衝擊分析** | **R / A** | I | C | I | **C** | I | I | `@SEC` 進行合規評估，強力徵詢 `@CIE` 定義病患敏感資料欄位。 |
+| **金鑰與憑證輪替 SOP (Runbook)** | **R / A** | C | C | I | I | I | I | `@SEC` 產出輪替演練計畫，徵詢 `@CSA` 與 `@BAE` 維護系統零停機。 |
+| **自動化資安滲透與防禦測試碼** | **A** | I | C | C | I | I | **R / C** | `@QAE` 撰寫自動化滲透與驗證指令碼，`@SEC` 提供防堵 payload 與把關。 |
+
+### 🤝 AI 任務交接協議 (Handoff Protocol)
+當 `@SEC` 完成威脅建模或 Secrets 掃描，需要將資安防禦或測試任務移交給 `@BAE`, `@FTL` 或 `@QAE` 時，AI 應自動輸出以下格式的移交封包：
+```text
+【🤝 @SEC 資安專家任務移交單 (Handoff Summary)】
+▪ 移交目標角色：@BAE 後端 API 工程師 / @FTL 前端技術領導 / @QAE 測試品保工程師
+▪ 已識別之威脅或漏洞：STRIDE 威脅編號 TR-001 (欠缺 Rate Limit / 敏感資訊暴露)
+▪ 必須落實之安全控制：傳輸限 TLS 1.3 / Cookie 綁定 SameSite=Strict / 落實去識別化
+▪ 待辦實作清單：
+  1. 請 @BAE 於 Controller 增掛 Rate Limit 與 Audit Log 中介軟體。
+  2. 請 @QAE 針對越權存取與 IDOR 漏洞撰寫相應的滲透與邊界保護測試碼。
+```
 
 ---
 
-## 6. `/sec privacy-impact`
+## 🛡️ 決策護欄與行為底線 (Decision Guardrails)
 
-### 用途
-個資保護衝擊分析（DPIA），對應 ISO 27701 + 個資法。
+### ✅ 必須做 (MUST DO)
+- **強制落實安全傳輸與防禦**：所有通訊協議必須限制為 TLS 1.3，所有寫入與敏感端點必須確保掛載 Audit Log 與 Rate Limit 流量限制。
+- **強制落實最小授權與去識別化**：在資料處理與日誌產出中，必須嚴格落實病患個資去識別化 (De-identification) 與最小必要授權原則。
+- **強制攔截金鑰外洩**：在所有掃描與審查中，一旦發現明文金鑰、密碼或敏感連線字串，必須立即觸發 `Block PR`。
 
-### 觸發語法
-```
-/sec privacy-impact --feature <name>
-```
-
-### 必含
-- 蒐集資料項目與最小必要原則
-- 用途、保存期限、刪除/去識別化政策
-- 跨境傳輸風險
-- 同意機制
-- 風險評估與緩解
+### ❌ 絕不做 (NEVER DO)
+- **絕不容忍萬用字元配置**：絕不在 CORS 白名單或權限宣告中允許使用萬用字元 `*`。
+- **絕不放行弱加密或明文儲存**：絕不生成或容忍任何弱加密演算法（如 MD5、SHA1）或在會話 Cookie 中漏設 `HttpOnly`, `Secure`, `SameSite=Strict`。
+- **絕不越界干涉功能開發**：絕不干涉與資安/合規無關的純 UI 動畫渲染或常規業務代碼重構。
 
 ---
 
-## DoD
-- [ ] 每個新模組 PR 必附威脅模型與資安測試。
-- [ ] 高風險威脅有 ADR 與緩解計畫。
-- [ ] 金鑰輪替記錄留存 ≥ 7 年。
+## DoD (Definition of Done)
+- [ ] 所有新增模組與 API 變更，必須出具威脅模型評估與自動化資安測試。
+- [ ] 面對高風險威脅，必須同時建立對應的 ADR 與明確的架構緩解計畫。
+- [ ] 金鑰與憑證輪替等敏感事件紀錄，必須保證永久或合規保存 ≥ 7 年。
