@@ -1,9 +1,7 @@
 # Project Folder Structure
 
 ```text
-列出磁碟區 新增磁碟區 的資料夾 PATH
-磁碟區序號為 00000040 A0BE:55E8
-D:.
+Project/
 |   .editorconfig
 |   .gitignore
 |   .prettierignore
