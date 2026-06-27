@@ -1,25 +1,46 @@
 ---
-description: Monorepo 架構與跨層責任邊界規則
+description: Monorepo 架構與跨層責任邊界規則 (RBAC.Lab 全端方案結構)
 alwaysApply: true
 ---
 
-# Monorepo 架構規範
+# Monorepo 架構規範 (RBAC.Lab 方案結構)
 
-## 1. 核心分層
+## 1. 核心分層與技術基準
+- **最新 LTS 技術優先**：後端以 **.NET 10 (或更新的 LTS 版本)** 為主；前端以 **Angular v20 (或更新的 LTS 版本)** 為主。
 - 前端 Angular、後端 C#、資料庫 SQL 規則需分層管理，不可混寫。
 - UI、Application、Domain、Infrastructure、Database 各層需維持單一責任。
 - 技術細節依賴只能由外向內，不得由 Domain 直接依賴 Infrastructure。
 
-## 2. 路徑與責任邊界
-- `apps/frontend/`：主要承載 Angular v20 / Vite 現代化前端應用程式。
-- `apps/backend/`：主要承載後端服務容器與 BFF (Backend for Frontend) 進入點。
-- `libs/`：共享生態庫，嚴格細分為 `libs/frontend/` (UI 與資料存取)、`libs/backend/` (驗證與資料庫實作) 及 `libs/shared/` (共用型別與公用程式)。
-- `services/`、`src/`、`api/`：主要承載 C# / .NET 微服務核心領域與 API 專案。
-- `database/`、`migrations/`、`sql/`：主要承載資料表定義、migration 與資料庫腳本。
-- CI/CD、容器、部署設定應與業務邏輯分離。
+## 2. 方案與資料夾結構 (RBAC.Lab 全端與 ClientApp 子架構)
+當 AI 建立新方案或存放庫時，必須依循 RBAC.Lab 經典全端 Monorepo 結構，建立如下的完整資料夾與子資料夾目錄結構：
+
+### 2.1 前端專案架構 (`ClientApp/`)
+主要承載 Angular v20+ 現代化前端 SPA 專案，其內部目錄與子資料夾架構必須遵循以下設計：
+- `ClientApp/src/app/core/`：核心基礎模組。包含通用單例服務 (Auth/OAuth2 驗證)、HTTP 攔截器 (Interceptors)、全域錯誤處理、路由守衛 (Guards) 與全域基礎佈局 (Layout)。
+- `ClientApp/src/app/shared/`：共享生態元件庫。包含 PrimeNG/PrimeFlex 客製封裝元件、共用管道 (Pipes)、指令 (Directives)、動態表單定義 (Formly custom types) 與通用 UI 設計系統。
+- `ClientApp/src/app/features/` (或 `pages/`)：依據業務領域驅動劃分的獨立功能模組（採 Standalone 架構）：
+  - `auth/`：登入、身分驗證與帳號設定。
+  - `dashboard/`：資料統計儀表板與視覺化圖表 (`chart.js`)。
+  - `form-engine/`：動態表單產生器與執行期呈現 (`@ngx-formly`, `jsoneditor`)。
+  - `user-management/`：使用者、角色管理清單 (`ag-grid-angular`) 與 GACL 權限配置。
+  - `workflow/`：工作流程引擎與日曆排程 (`@fullcalendar`)。
+- `ClientApp/src/assets/`：靜態資源，包含多國語系翻譯檔 (`@ngx-translate`)、圖示與靜態圖片。
+- `ClientApp/src/environments/`：環境配置設定檔（如 `environment.ts`）。
+- `ClientApp/` 根設定檔：包含 `angular.json` (或 Vite 設定)、`package.json`、`tsconfig.json` 及 `eslint.config.mjs`。
+
+### 2.2 後端宿主與類別庫架構 (C# / .NET 10+)
+位於主宿主專案與相鄰根目錄下，負責 .NET 10+ 核心業務與 Web API 服務：
+- `Controllers/`：承載 C# / .NET 10+ 的 RESTful 與 MVC API 端點，如 `AccountController`, `GACLController`, `FileController` 等。
+- `Authorization/`：承載進階安全宣告、自訂中介軟體 (`GaclAuthorizationMiddlewareResultHandler`) 與宣告原則 (Requirements/Policies)。
+- `Contract/`、`ViewModels/`：承載 DTOs、跨層請求/回應模型與 FluentValidation 驗證契約。
+- `Helpers/`：通用公用程式、系統組態配置與範本引擎 (EmailTemplates)。
+- `DAL/` (外部專案)：資料存取層與 EF Core 10+ 多 DbContext 分離管理架構 (`ApplicationDbContext`, `ManagementDBContext`, `gaclContext`, `FormEngineContext`)。
+- `FileSystem.Lib/`、`OpenXML.Report.Lib/`：處理檔案系統管理與進階 OpenXML 報表產製的共用函式庫。
+- `database/`、`Migrations/`、`sql/`：承載 EF Core 遷移紀錄、資料庫建置腳本與種子資料。
+- `Program.cs` / `appsettings.json`：後端依賴注入、中介軟體建構與 SPA 路由伺服核心 (`ClientApp/dist` 或開發伺服器轉發)。
 
 ## 3. AI 生成程式碼要求
-- 任何新增檔案都必須放在合理目錄，並遵守對應技術規則與 Nx 模組化規範。
+- 任何新增檔案都必須放在上述嚴謹規範的合理目錄，並遵守對應的 .NET 10+ 與 Angular 20+ 技術規則。
 - 變更前先閱讀相鄰檔案的命名與實作風格，再產出一致的程式碼。
 - 重構時優先維持公開 API、資料契約與 migration 相容性。
 

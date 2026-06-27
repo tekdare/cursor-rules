@@ -1,6 +1,7 @@
 ---
-description: Angular 命名、檔案結構與 Angular 現代實作基準
+description: Angular 命名、檔案結構與 Angular v20+ 現代實作基準 (ClientApp 架構)
 globs:
+  - "ClientApp/**/*.ts"
   - "apps/**/*.ts"
   - "libs/**/*.ts"
 alwaysApply: false
@@ -34,19 +35,48 @@ alwaysApply: false
 
 ---
 
-## 2. Angular v20 現代實作基準
+## 2. Angular v20+ 現代實作基準
 
 ### 2.1 現代化 API 優先
 - **全面預設使用 Standalone Components**，摒棄傳統 NgModule 組織模式。
 - **禁止使用建構子注入**: 一律改用 `inject()` 函式進行依賴注入（例：`private readonly authService = inject(AuthService)`）。
-- **擁抱 Signals 生態**: 優先採用 `input()`、`output()`、`model()`、`signal()`、`computed()` 等最新 Angular v20 API，取代 `@Input` 與 `@Output`。
+- **擁抱 Signals 生態**: 優先採用 `input()`、`output()`、`model()`、`signal()`、`computed()` 等最新 Angular v20+ API，取代 `@Input` 與 `@Output`。
 
 ### 2.2 跨層與後端例外說明
-- `apps/backend` 與 `libs/backend` 中的 TypeScript 檔案屬後端微服務或 NestJS 容器範疇，遵循後端對應的架構與依賴注入慣例，不強制套用 Angular 前端專屬元件與模組規範。
+- `ClientApp` 為前端主 SPA 目錄；若專案存在 `apps/backend` 或 `libs/backend` 中的 TypeScript 檔案，則屬後端微服務或 NestJS 容器範疇，遵循後端對應的架構與依賴注入慣例，不強制套用 Angular 前端專屬元件與模組規範。
 
 ---
 
-## 3. 檔案組織與共置
+## 3. ClientApp 內部資料夾與子目錄架構設計
+當 AI 建立前端方案或增添業務功能時，必須嚴格遵守 `ClientApp` 的模組化架構目錄與子資料夾分類：
+
+### 3.1 核心分層目錄
+- **`ClientApp/src/app/core/` (核心層)**：
+  - `auth/`：存放身分驗證、OIDC Token 管理服務 (`oauth2.service.ts`)。
+  - `interceptors/`：存放 HTTP 攔截器，如 `auth.interceptor.ts`, `error.interceptor.ts`。
+  - `guards/`：存放路由防護，如 `auth.guard.ts`。
+  - `layout/`：存放主系統框架，如 `header.component.ts`, `sidebar.component.ts`, `footer.component.ts`。
+- **`ClientApp/src/app/shared/` (共享層)**：
+  - `components/`：跨模組通用 UI 元件（如客製化表格表單包裝、對話框、提示訊息）。
+  - `directives/`：共用操作指令。
+  - `pipes/`：共用格式化管道。
+  - `formly/`：動態表單引擎 (Formly) 自訂控制項型別與包裹器 (`types/`, `wrappers/`)。
+- **`ClientApp/src/app/features/` (功能業務層)**：
+  - 每個子資料夾為一個獨立的業務領域，並應具備專屬的路由 (`*.routes.ts`) 與 Standalone 元件：
+    - `auth/`：登入頁面與帳戶註冊設定。
+    - `dashboard/`：圖表統計儀表板。
+    - `form-engine/`：動態表單建構器、設定 JSON 預覽器。
+    - `user-management/`：AG-Grid 使用者清單與 GACL 角色分派介面。
+    - `workflow/`：流程簽核與排程行事曆模組。
+
+### 3.2 根目錄與靜態資源
+- `ClientApp/src/assets/`：存放 `i18n/` 多國語系 JSON 檔案、圖示庫。
+- `ClientApp/src/environments/`：環境宣告 (`environment.ts`, `environment.development.ts`)。
+- `ClientApp/` 根檔案：確保配置 `eslint.config.mjs` (ESLint 9)、`tsconfig.app.json` 及建置設定檔。
+
+---
+
+## 4. 檔案組織與共置
 - Component、Template、Style 與 Test 檔案應於同一目錄緊密共置。
 - 一個檔案僅包含一個主要類別，維持單一職責。
-- 邏輯過於複雜的元件或服務，應重構拆分為更小的獨立元件或共享函式庫 (`libs/frontend`)。
+- 邏輯過於複雜的元件或服務，應重構拆分為更小的獨立元件或共享函式庫。

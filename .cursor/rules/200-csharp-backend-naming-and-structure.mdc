@@ -1,34 +1,38 @@
 ---
-description: C# 微服務命名、專案結構與現代化 C# 12/13 程式碼規範
+description: C# 微服務、API 命名、專案結構與 .NET 10+ 現代化 C# 14 程式碼規範
 globs:
+  - "Controllers/**/*.cs"
+  - "Authorization/**/*.cs"
+  - "Helpers/**/*.cs"
+  - "ViewModels/**/*.cs"
   - "services/**/*.cs"
   - "src/**/*.cs"
   - "api/**/*.cs"
 alwaysApply: false
 ---
 
-# C# 命名與結構規範
+# C# 命名與結構規範 (.NET 10+ / RBAC.Lab 結構)
 
 ## 1. 命名與現代語法
+- **最新 LTS 技術優先**：後端全面以 **.NET 10 (或更新的 LTS 版本)** 為主，擁抱最新 C# 14 / C# 13 語法特徵（如 File-scoped namespaces、Primary constructors、Record structs 與集合表達式）。
 - 類別、record、enum 使用 `PascalCase`。
 - 私有欄位使用 `_camelCase`。
 - 介面使用 `I` 前綴，例如 `IUserRepository`。
 - DTO、Request、Response、Command、Query、Handler 使用明確後綴。
-- **擁抱現代 C# 12/13 語法**: 優先採用 File-scoped namespaces、Primary constructors 與 Record structs。
 
-## 2. 結構與 Nx 協作邊界
-- 依責任分 Application、Domain、Infrastructure、Api。
+## 2. 結構與 RBAC.Lab / SPA 協作邊界
+- **宿主與 SPA 整合**：主宿主專案包含 `Controllers` (API 端點)、`Authorization` (自訂原則與中介軟體)、`Helpers` 與 `ViewModels`。前端 Angular 專案則位於 `ClientApp` 內。
+- **類別庫與資料層隔離**：透過分離的專案（如 `DAL.csproj`、`FileSystem.Lib.csproj`、`OpenXML.Report.Lib.csproj`）管理 EF Core 10+ 資料實體與進階邏輯。
 - Controller、Endpoint、Handler、Service、Repository 不可混用職責。
-- Domain 不直接依賴外部框架與資料庫實作。
-- 與 Nx 根目錄下的 `apps/backend` 或 `libs/backend` 進行協作時，需維持清晰的 API 契約與服務界線。
+- Domain 與 DAL 不直接依賴外部 UI 與宿主設定。
 
 ## 3. 程式碼品質
-- 開啟 Nullable reference types (`<Nullable>enable</Nullable>`)。
+- 全面開啟 Nullable reference types (`<Nullable>enable</Nullable>`)。
 - 禁止 `dynamic` 與過度使用 object。
 - 方法需短小、明確，避免超長 God class 或肥大 service。
 - 優先用不可變資料結構 (Immutable data structures) 與清楚的 DTO 邊界。
 
-## 4. 依賴注入
-- 服務需透過 DI 註冊與注入。
+## 4. 依賴注入與中介軟體
+- 服務需透過 DI 註冊與注入（於 `Program.cs` 採用現代化 Minimal Hosting Model 註冊）。
 - Service lifetime 需符合使用情境，不可任意全部註冊為 singleton。
-- 不可在業務邏輯中直接 new 出外部依賴而繞過 DI。
+- 不可在業務邏輯中直接 new 出外部依賴而繞過 DI。

@@ -1,6 +1,9 @@
-﻿---
+---
 description: Angular Component、Template、Style 與 A11y 規範
 globs:
+  - "ClientApp/**/*.component.ts"
+  - "ClientApp/**/*.component.html"
+  - "ClientApp/**/*.component.css"
   - "apps/**/*.component.ts"
   - "libs/**/*.component.ts"
   - "apps/**/*.component.html"

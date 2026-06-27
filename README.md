@@ -2,47 +2,55 @@
 
 > 🎯 Hierarchical Cursor AI rules for safe full-stack Angular & .NET monorepos
 
-A structured set of `.cursor/rules/*.mdc` files and modern **Nx Monorepo** architecture designed to constrain Cursor AI to generate **modern Angular v20** code (standalone components, Signals, typed RxJS), clean **C#/.NET** microservices, and optimized **SQL** databases with zero rule conflicts.
+A structured set of `.cursor/rules/*.mdc` files designed to constrain Cursor AI to generate **modern Angular v20+** code (standalone components, Signals, typed RxJS) within a `ClientApp` structure, clean **C#/.NET 10+** web APIs/microservices, and optimized **SQL** databases with zero rule conflicts, following the **RBAC.Lab Monorepo** architecture.
 
 ---
 
 ## ✨ Key Features & Tech Stack
 
-- **Modern Nx Monorepo (v21)**: Fully integrated workspace utilizing `@nx/angular`, `@nx/vite`, and `@nx/workspace` for seamless cross-layer development and shared library management.
-- **Angular v20 Frontend**: High-performance frontend powered by Vite 6 and AnalogJS plugins. Embraces Standalone components, Signals, reactive state management, and strict TypeScript/ESLint 9 standards.
-- **C# / .NET Clean Architecture**: Advanced rules governing C# microservices, Minimal APIs, robust domain modeling, observability (logging/tracing/health checks), and enterprise security resilience.
+- **RBAC.Lab Monorepo Architecture**: Cleanly couples the ASP.NET Core API host project (`Controllers`, `Authorization`, `Helpers`) with a dedicated `ClientApp` SPA folder and separate library projects (`DAL`, `FileSystem.Lib`, `OpenXML.Report.Lib`).
+- **.NET 10+ LTS Backend**: Advanced rules governing C# 14 / C# 13 web APIs, robust domain modeling, Entity Framework Core 10+ multi-DbContext structures, observability (logging/tracing/health checks), and enterprise security resilience.
+- **Angular v20+ LTS Frontend**: High-performance frontend hosted in `ClientApp`. Embraces Standalone components, Signals, reactive state management, and strict TypeScript/ESLint 9 standards.
 - **Multi-Dialect SQL Optimization**: Isolated rule sets for MSSQL, Oracle, PostgreSQL, MySQL, and SQLite to ensure optimized indexing, safe migrations, and precise SQL dialect generation.
 - **Next-Gen Quality Assurance**: Fast unit testing powered by Vitest 3 (`vitest.workspace.ts`) and modern flat-config ESLint (`eslint.config.mjs`).
 - **Zero-Conflict AI Guardrails**: Multi-layer rule cascade with strict glob matching to prevent AI token bloating and cross-domain instruction conflicts.
 
 ---
 
-## 🏛️ Project Structure
+## 🏛️ Project Structure (RBAC.Lab Architecture)
 
-Our monorepo cleanly separates applications and shared libraries to enforce clear boundary definitions and clean architecture:
+Our monorepo cleanly separates the ASP.NET Core host, the Angular SPA client, and shared libraries to enforce clear boundary definitions and clean architecture:
 
 ```text
-cursor-rules/
+cursor-rules / RBAC.Lab Monorepo /
 ├── .cursor/                  # Global Cursor AI rules (alwaysApply: true)
 │   └── rules/                # Domain-specific Cursor AI rules (alwaysApply: false)
-├── apps/
-│   ├── backend/              # Backend application container / microservice entry
-│   └── frontend/             # Modern Angular v20 frontend application (Vite/AnalogJS)
-├── libs/
-│   ├── backend/
-│   │   ├── auth/             # Backend authentication library
-│   │   └── database/         # Database integration & infrastructure library
-│   ├── frontend/
-│   │   ├── data-access/      # Frontend state management, services & API clients
-│   │   └── ui/               # Reusable UI components & design system
-│   └── shared/
-│       ├── types/            # Shared TypeScript/domain contract definitions
-│       └── utils/            # Cross-cutting utility functions
+├── ClientApp/                # Modern Angular v20+ frontend application (SPA root)
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── core/         # Core singletons (Auth/OAuth2, Interceptors, Guards, Layout)
+│   │   │   ├── shared/       # Shared UI (PrimeNG wrappers, Pipes, Directives, Formly custom types)
+│   │   │   └── features/     # Feature domains (auth, dashboard, form-engine, user-management, workflow)
+│   │   ├── assets/           # Static assets, i18n translation JSON files (`@ngx-translate`)
+│   │   └── environments/     # Environment configurations (`environment.ts`)
+│   ├── angular.json          # Angular CLI build configuration (or Vite setup)
+│   ├── package.json          # Frontend dependencies
+│   ├── tsconfig.json         # TypeScript base configuration
+│   └── eslint.config.mjs     # Frontend ESLint 9 Flat Config
+├── Controllers/              # ASP.NET Core .NET 10+ API Endpoints & Controllers
+├── Authorization/            # Security policies, custom requirements & middleware
+├── Helpers/                  # Cross-cutting helper utilities & configuration objects
+├── ViewModels/               # DTOs, request/response models & validation rules
+├── Migrations/               # EF Core 10+ migration files
+├── DAL/                      # Data Access Layer & multi-DbContext definitions
+├── FileSystem.Lib/           # Dedicated library for file system management
+├── OpenXML.Report.Lib/       # Dedicated library for advanced report generation
 ├── MDC_RULES_ANALYSIS.md     # In-depth analysis of MDC loading & glob matching
 ├── project_structure.md      # Detailed breakdown of file trees & project structure
 ├── eslint.config.mjs         # Modern flat ESLint 9 configuration
 ├── vitest.workspace.ts       # Vitest 3 workspace configuration
-└── nx.json                   # Nx monorepo configuration
+├── appsettings.json          # Backend configuration & connection strings
+└── Program.cs                # .NET 10+ minimal hosting start & middleware pipeline
 ```
 
 *For more in-depth details on the repository layout and rule loading analysis, see [project_structure.md](project_structure.md) and [MDC_RULES_ANALYSIS.md](MDC_RULES_ANALYSIS.md).*
@@ -58,8 +66,8 @@ These rules are loaded globally (`alwaysApply: true`) to provide core baseline g
 
 | File | `alwaysApply` | `globs` | Purpose |
 |------|:---:|---|---|
-| `architecture-monorepo.mdc` | ✅ true | All | Monorepo architecture & cross-layer boundary rules |
-| `project-overview.mdc` | ✅ true | All | Overall project overview & AI collaboration guidelines |
+| `architecture-monorepo.mdc` | ✅ true | All | Monorepo architecture & cross-layer boundary rules (RBAC.Lab structure) |
+| `project-overview.mdc` | ✅ true | All | Overall project overview & AI collaboration guidelines (.NET 10 / Angular 20) |
 | `safety-security.mdc` | ✅ true | All | Safety, data protection, verification, and testing baselines |
 
 ### 2. Domain Rules (`.cursor/rules/`)
@@ -68,14 +76,14 @@ These rules target specific technologies and file patterns based on glob matchin
 | Category / File | `alwaysApply` | `globs` | Purpose |
 |---|:---:|---|---|
 | **Global Naming & TS** | | | |
-| `000-global-naming.mdc` | ❌ false | `apps/frontend/src/**/*` | Modern naming conventions & TypeScript baseline for frontend assets |
+| `000-global-naming.mdc` | ❌ false | `ClientApp/src/**/*`, `apps/frontend/src/**/*` | Modern naming conventions & TypeScript baseline for frontend assets |
 | **Angular Frontend** | | | |
-| `100-angular-naming-and-structure.mdc` | ❌ false | `apps/**/*.ts`, `libs/**/*.ts` | Angular naming, file structures & TypeScript coding standards |
-| `110-angular-components.mdc` | ❌ false | `apps/**/*.component.{ts,html,css}`, `libs/**/*.component.{ts,html,css}` | Standalone component decoration, templates, style guide & A11y |
-| `120-angular-rxjs-signals.mdc` | ❌ false | `apps/**/*.{component,service}.ts`, `libs/**/*.{component,service}.ts` | Reactive state management, RxJS and Signals integration & boundaries |
-| `130-angular-routing-forms-http.mdc` | ❌ false | `apps/**/*.ts`, `libs/**/*.ts` | Angular routing, forms, HTTP & error handling |
+| `100-angular-naming-and-structure.mdc` | ❌ false | `ClientApp/**/*.ts`, `apps/**/*.ts`, `libs/**/*.ts` | Angular v20+ naming, file structures & TypeScript coding standards |
+| `110-angular-components.mdc` | ❌ false | `ClientApp/**/*.component.{ts,html,css}`, `apps/**/*.component.{ts,html,css}` | Standalone component decoration, templates, style guide & A11y |
+| `120-angular-rxjs-signals.mdc` | ❌ false | `ClientApp/**/*.{component,service}.ts`, `apps/**/*.{component,service}.ts` | Reactive state management, RxJS and Signals integration & boundaries |
+| `130-angular-routing-forms-http.mdc` | ❌ false | `ClientApp/**/*.ts`, `apps/**/*.ts`, `libs/**/*.ts` | Angular routing, forms, HTTP & error handling |
 | **C# Backend** | | | |
-| `200-csharp-backend-naming-and-structure.mdc` | ❌ false | `services/**/*.cs`, `src/**/*.cs`, `api/**/*.cs` | C# naming, microservice project structures & coding standards |
+| `200-csharp-backend-naming-and-structure.mdc` | ❌ false | `Controllers/**/*.cs`, `Authorization/**/*.cs`, `services/**/*.cs`, `src/**/*.cs` | C# naming, .NET 10+ project structures & modern C# 14 coding standards |
 | `210-csharp-api-and-minimalapi.mdc` | ❌ false | `**/*Controller.cs`, `api/**/*.cs`, `**/Program.cs` | Web APIs, Minimal APIs, request validation & response formatting |
 | `220-csharp-application-domain-infra.mdc` | ❌ false | `services/**/*.cs`, `src/**/*.cs` | Clean Architecture layers (Application, Domain, Infrastructure) |
 | `230-csharp-observability-security.mdc` | ❌ false | `services/**/*.cs`, `src/**/*.cs`, `**/Program.cs` | Observability (logging, trace, health check) & security resilience |
@@ -115,8 +123,8 @@ Each file uses `##` / `###` headings to divide semantically distinct concerns, m
 
 ```
 Global Rules (.cursor/*.mdc)
-  ├── Frontend Domain (1xx-angular-*.mdc, active on apps/libs)
-  ├── Backend Domain (2xx-csharp-*.mdc, active on services/src/api)
+  ├── Frontend Domain (1xx-angular-*.mdc, active on ClientApp/apps/libs)
+  ├── Backend Domain (2xx-csharp-*.mdc, active on Controllers/services/src)
   ├── Database Domain (3xx-sql-*.mdc, active on database/sql)
   └── DevOps Domain (4xx-devops-*.mdc, active on YAML/Docker)
 ```

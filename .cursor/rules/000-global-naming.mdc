@@ -1,6 +1,8 @@
 ---
 description: 適用於前端與 TypeScript 開發環境的現代化命名規範與基礎 TypeScript 編碼標準
-globs: "apps/frontend/src/**/*"
+globs:
+  - "ClientApp/src/**/*"
+  - "apps/frontend/src/**/*"
 alwaysApply: false
 ---
 

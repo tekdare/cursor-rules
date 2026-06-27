@@ -1,15 +1,16 @@
 ---
-description: Monorepo 專案總覽與 AI 協作總則，適用於整個倉庫
+description: Monorepo 專案總覽與 AI 協作總則 (RBAC.Lab 方案架構)
 alwaysApply: true
 ---
 
-# 專案總覽
+# 專案總覽 (RBAC.Lab 全端方案架構)
 
 ## 1. 專案定位與技術堆疊
-- 本倉庫為 AI Rules-Driven 的企業級 Nx Monorepo (v21)。
-- 前端採用 Angular v20 搭配 Vite 6 與 AnalogJS；後端採用 C# / .NET 微服務與 Node/Nest 容器架構。
-- 測試與品管涵蓋 Vitest 3 測試框架與 ESLint 9 Flat Config 規範。
-- 資料層涵蓋 MS-SQL、Oracle、PostgreSQL、MySQL、SQLite。
+- 本倉庫為 AI Rules-Driven 的企業級 Monorepo，當 AI 建立方案及存放庫時，必須精確建立如 RBAC.Lab Monorepo 的方案與資料夾結構（包含 `ClientApp` 及其子資料夾之架構設計）。
+- **最新 LTS 技術優先**：後端採用 **.NET 10 (或更新的 LTS 版本)** 構建核心 API、微服務與 SPA 宿主；前端採用 **Angular v20 (或更新的 LTS 版本)** 位於 `ClientApp` 內。
+- **前端 ClientApp 子目錄架構**：嚴格依循 `ClientApp/src/app/` 下區分 `core/` (單例服務/攔截器)、`shared/` (共用UI/表單元件) 及 `features/` (依業務模組如 auth, dashboard, form-engine, user-management, workflow 切分的獨立領域) 之架構設計。
+- 測試與品管涵蓋 Vitest 3 / 現代化單元測試框架與 ESLint 9 Flat Config 規範。
+- 資料層涵蓋 MS-SQL、Oracle、PostgreSQL、MySQL、SQLite，並以 EF Core 10+ 進行多 DbContext 職責分離管理。
 - 所有 AI 生成內容都必須優先遵守專案既有架構、命名、分層與安全規範。
 
 ## 2. AI 協作原則

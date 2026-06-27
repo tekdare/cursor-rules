@@ -1,6 +1,7 @@
-﻿---
+---
 description: Angular 路由、表單、HTTP 與錯誤處理規範
 globs:
+  - "ClientApp/**/*.ts"
   - "apps/**/*.ts"
   - "libs/**/*.ts"
 alwaysApply: false
