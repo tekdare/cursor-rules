@@ -17,7 +17,7 @@
 | [architecture-monorepo.mdc](file:///D:/Dev/cursor-angular-rules/.cursor/architecture-monorepo.mdc) | `true` | 全域套用 | Monorepo 架構與跨層責任邊界規則 |
 | [project-overview.mdc](file:///D:/Dev/cursor-angular-rules/.cursor/project-overview.mdc) | `true` | 全域套用 | Monorepo 專案總覽與 AI 協作總則，適用於整個倉庫 |
 | [safety-security.mdc](file:///D:/Dev/cursor-angular-rules/.cursor/safety-security.mdc) | `true` | 全域套用 | 專案安全、資料保護、驗證與測試底線 |
-| [000-global-naming.mdc](file:///D:/Dev/cursor-angular-rules/.cursor/rules/000-global-naming.mdc) | `true` | `apps/sandbox/src/**/*` | 適用於所有 Angular 開發物件與檔案的現代化命名規範與基礎 TypeScript 編碼標準（全域載入） |
+| [000-global-naming.mdc](file:///D:/Dev/cursor-angular-rules/.cursor/rules/000-global-naming.mdc) | `false` | `apps/frontend/src/**/*` | 適用於所有 Angular 開發物件與檔案的現代化命名規範與基礎 TypeScript 編碼標準 |
 | [100-angular-naming-and-structure.mdc](file:///D:/Dev/cursor-angular-rules/.cursor/rules/100-angular-naming-and-structure.mdc) | `false` | `apps/**/*.ts`<br>`libs/**/*.ts` | Angular 命名、檔案結構與基礎 TypeScript 規則 |
 | [110-angular-components.mdc](file:///D:/Dev/cursor-angular-rules/.cursor/rules/110-angular-components.mdc) | `false` | `apps/**/*.component.ts`<br>`libs/**/*.component.ts`<br>`apps/**/*.component.html`<br>`libs/**/*.component.html`<br>`apps/**/*.component.css`<br>`libs/**/*.component.css` | Angular Component、Template、Style 與 A11y 規範 |
 | [120-angular-rxjs-signals.mdc](file:///D:/Dev/cursor-angular-rules/.cursor/rules/120-angular-rxjs-signals.mdc) | `false` | `apps/**/*.component.ts`<br>`libs/**/*.component.ts`<br>`apps/**/*.service.ts`<br>`libs/**/*.service.ts` | Angular 響應式狀態規範——適用於所有 Service 及 Component 檔案，統一 RxJS 與 Signals 的命名與邊界 |
@@ -38,10 +38,13 @@
 
 ## 🛠️ 分析與建議
 
-1. **特別注意：[000-global-naming.mdc](file:///D:/Dev/cursor-angular-rules/.cursor/rules/000-global-naming.mdc)**
-   * 此規則同時設定了 `alwaysApply: true` 與 `globs: apps/sandbox/src/**/*`。
-   * **運作行為**：在 Cursor 中，`alwaysApply: true` 的優先權高於 `globs`。也就是說，該規範事實上會**全域套用**至整個專案，而不僅僅侷限在 `sandbox` 目錄。若您的本意是只讓 `sandbox` 目錄套用此命名規則，應將 `alwaysApply` 改為 `false`。
+1. **已修正：[000-global-naming.mdc](file:///D:/Dev/cursor-angular-rules/.cursor/rules/000-global-naming.mdc)**
+   * 此規則原先設定了 `alwaysApply: true`，會導致全域套用至整個專案（包含後端 C# 微服務）。
+   * **調整後行為**：目前已將 `alwaysApply` 修改為 `false`，並精準匹配 `globs: apps/frontend/src/**/*`，確保僅在前端 Angular 開發目錄套用此命名與 TypeScript 規範，避免全域範圍的規則污染。
 
-2. **動態載入的機制運作良好**
-   * 其餘 `alwaysApply: false` 的規則都精確設定了對應開發環境（如 Angular、C#、SQL、DevOps）的 `globs` 匹配路徑。
-   * 這能有效減少 Cursor 在與 AI 互動時攜帶的 Token 數量，只有在開啟或提及相關檔案時才會加載，能大優化模型回應速度並降低 Token 使用成本。
+2. **舊有重複規則清理**
+   * 已移除舊位置與重複的規則檔案（`100-angular-components.mdc` 與 `200-rxjs-signals.mdc`），全面採用新版全端架構的職責分離規則（`110-angular-components.mdc`、`120-angular-rxjs-signals.mdc` 等）。
+
+3. **動態載入的機制運作良好**
+   * 所有 `alwaysApply: false` 的規則都精確設定了對應開發環境（如 Angular、C#、SQL、DevOps）的 `globs` 匹配路徑。
+   * 這能有效減少 Cursor 在與 AI 互動時攜帶的 Token 數量，只有在開啟或提及相關檔案時才會加載，能大幅優化模型回應速度並降低 Token 使用成本。

@@ -1,7 +1,7 @@
 ---
-description: 適用於所有 Angular 開發物件與檔案的現代化命名規範與基礎 TypeScript 編碼標準（全域載入）
-globs: "apps/sandbox/src/**/*"
-alwaysApply: true
+description: 適用於所有 Angular 開發物件與檔案的現代化命名規範與基礎 TypeScript 編碼標準
+globs: "apps/frontend/src/**/*"
+alwaysApply: false
 ---
 
 # Angular 全域命名與 TypeScript 編碼規範
